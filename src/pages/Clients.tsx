@@ -16,3 +16,4 @@ const Clients: React.FC = () => {
 }
 
 export default Clients
+

@@ -1,4 +1,5 @@
 import { apiService } from './apiService'
+import { UserPermissions } from '../store/authStore'
 
 export interface LoginResponse {
   success: boolean
@@ -11,9 +12,13 @@ export interface LoginResponse {
       lastName: string
       phone?: string
       role: string
+      department: string
+      position?: string
       avatar?: string
+      isActive: boolean
     }
     token: string
+    permissions: UserPermissions
   }
 }
 
@@ -24,11 +29,15 @@ export interface User {
   lastName: string
   phone?: string
   role: string
+  department: string
+  position?: string
   avatar?: string
+  isActive: boolean
+  permissions?: UserPermissions
 }
 
 class AuthService {
-  async login(email: string, password: string): Promise<{ user: User; token: string }> {
+  async login(email: string, password: string): Promise<{ user: User; token: string; permissions: UserPermissions }> {
     const response = await apiService.post<LoginResponse>('/auth/login', {
       email,
       password,
@@ -39,8 +48,9 @@ class AuthService {
     }
 
     return {
-      user: response.data.user,
+      user: { ...response.data.user, permissions: response.data.permissions },
       token: response.data.token,
+      permissions: response.data.permissions,
     }
   }
 
@@ -71,3 +81,4 @@ class AuthService {
 }
 
 export const authService = new AuthService()
+

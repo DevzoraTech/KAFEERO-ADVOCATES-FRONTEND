@@ -1,14 +1,32 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+export interface UserPermissions {
+  canManageUsers: boolean
+  canManageClients: boolean
+  canManageCases: boolean
+  canManageDocuments: boolean
+  canManageInvoices: boolean
+  canViewReports: boolean
+  canManageSettings: boolean
+  canViewAllData: boolean
+  canManageFinance: boolean
+  canManageRecords: boolean
+  modules: string[]
+}
+
 export interface User {
   id: string
   email: string
   firstName: string
   lastName: string
   phone?: string
-  role: 'ADMIN' | 'PARTNER' | 'ASSOCIATE' | 'STAFF' | 'INTERN'
+  role: string
+  department: string
+  position?: string
   avatar?: string
+  isActive: boolean
+  permissions?: UserPermissions
 }
 
 interface AuthState {
@@ -49,3 +67,4 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 )
+
